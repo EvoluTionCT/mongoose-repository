@@ -54,7 +54,7 @@ export default builder.Repository
 .delete(data: any)
 .aggregate(data: any)
 .aggregatePaginate(query: any, options)
-
+.findOneAndUpdateDeleted(query:any)
 ```
 
 

@@ -188,6 +188,19 @@ class BaseRepository {
     page.hasNext = page.page * page.limit < result.totalCount;
     return page
   }
+
+  public async restore(data: any): Promise<any> {
+    let result = this.model.restore(data)
+    const { _id } = data
+    amqpPublish('restore', { _id }, this.model.modelName)
+    return result
+  }
+
+  public async updateOneDeleted(query: any, data: any): Promise<any> {
+    let result = await this.model.findOneAndUpdateDeleted(query, data);
+    amqpPublish('updateOneDeleted', omitv(result), this.model.modelName)
+    return result
+  }
 }
 
 export default BaseRepository
